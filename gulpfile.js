@@ -6,6 +6,7 @@ var minCss=require('gulp-clean-css');
 var fs=require('fs');
 var path=require('path');
 var url=require('url');
+var data=require('./mock/data.json')
   
    //编译sass
    gulp.task('sass',function(){
@@ -30,7 +31,19 @@ var url=require('url');
                       }
                       pathname=pathname==='/'?'index.html':pathname;
                       if(pathname==='/api/list'){
-
+                          var type=url.parse(req.url,true).query.key;
+                          var arr=[];
+                          data.map(function(file){
+                               if(file.type.indexOf(type)!=-1){
+                                   arr.push(file)
+                               }
+                          })
+                          
+                          if(arr.length>0){
+                              res.end(JSON.stringify({code:1,msg:arr}))
+                          }else{
+                              res.end(JSON.stringify({code:0,msg:'没有此商品'}))
+                          }   
                       }else{
                           res.end(fs.readFileSync(path.join(__dirname,'src',pathname)))
                       }
