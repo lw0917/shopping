@@ -53,3 +53,26 @@ var data=require('./mock/data.json')
 
    //开发环境
    gulp.task('default',gulp.series('sass','dev','watch'))
+ 
+   //压缩js
+   gulp.task('minJs',function(){
+    return gulp.src('./src/js/*.js')
+           .pipe(uglify())
+           .pipe(gulp.dest('./bulid/js'))
+   })
+   //拷贝css
+   gulp.task('copyCss',function(){
+    return gulp.src('./src/css/*.css')
+           .pipe(gulp.dest('./bulid/css'))
+   })
+   //拷贝libs
+   gulp.task('copyJs',function(){
+    return gulp.src('./src/js/libs/*.js')
+           .pipe(gulp.dest('./bulid/js/libs'))
+   })
+   //拷贝html
+   gulp.task('copyHtml',function(){
+    return gulp.src('./src/*.html')
+           .pipe(gulp.dest('./bulid/*.html'))
+   })
+   gulp.task('bulid',gulp.parallel('minJs','copyCss','copyJs','copyHtml'))
